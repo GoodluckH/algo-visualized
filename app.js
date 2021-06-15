@@ -21,7 +21,6 @@ var start;
 var end;
 resetBtn.style.display = "none";
 
-
 /**** button functions ******/
 function populate() {
   canvas.style.cursor = "pointer";
@@ -39,11 +38,10 @@ function populate() {
     block.setAttribute("onClick", "setStart(" + i + ")");
     canvas.append(block);
   }
-  // initAnimate(); 
+  // initAnimate();
   targetGen(); // comment this out if using initAnimate()
   setStart(Math.floor(Math.random() * nBlocks));
 }
-
 
 function target() {
   end = Math.floor(Math.random() * nBlocks);
@@ -60,6 +58,7 @@ function targetGen() {
 }
 
 function setStart(id) {
+  if (algBtns.style.display == "none") return;
   if (start != null && start != id) {
     blocks[start].style.backgroundColor = "#023047";
   }
@@ -102,7 +101,11 @@ function pathAnimate(index) {
 
 function convertDivToLine(cur, prev) {
   if (Math.abs(cur - prev) == blocksPerRow) {
-    if (prev != start && blocks[prev].children[0].className == "horiBar") {
+    if (
+      prev != start &&
+      blocks[prev].children[0] != null &&
+      blocks[prev].children[0].className == "horiBar"
+    ) {
       blocks[prev].innerHTML = "";
       blocks[prev].style.transform = "scale(0.5)";
       blocks[prev].style.borderRadius = "50%";
@@ -116,7 +119,11 @@ function convertDivToLine(cur, prev) {
     vertBar.className = "vertBar";
     blocks[cur].append(vertBar);
   } else if (Math.abs(cur - prev) == 1) {
-    if (prev != start && blocks[prev].children[0].className == "vertBar") {
+    if (
+      prev != start &&
+      blocks[prev].children[0] != null &&
+      blocks[prev].children[0].className == "vertBar"
+    ) {
       blocks[prev].innerHTML = "";
       blocks[prev].style.transform = "scale(0.5)";
       blocks[prev].style.borderRadius = "50%";
@@ -129,6 +136,15 @@ function convertDivToLine(cur, prev) {
     let horiBar = document.createElement("div");
     horiBar.className = "horiBar";
     blocks[cur].append(horiBar);
+  } else {
+    if (cur == end) {
+      resetBtn.disabled = false;
+      return;
+    }
+    blocks[cur].innerHTML = "";
+    blocks[cur].style.transform = "scale(0.5)";
+    blocks[cur].style.borderRadius = "50%";
+    blocks[cur].style.backgroundColor = "#ffe8d6";
   }
   prevBlock = cur;
 }
@@ -165,7 +181,8 @@ function visualize(markedPaths, solutionPath, speed) {
           blocks[markedPaths[x - 1]].style.backgroundColor = "gray";
 
         if (x == markedPaths.length - 1) {
-          blocks[markedPaths[x]].style.backgroundColor = "gray";
+          if (markedPaths[x] != end)
+            blocks[markedPaths[x]].style.backgroundColor = "gray";
           showPath(solutionPath, speed * 2);
         }
       }, x * speed);
@@ -193,16 +210,36 @@ function graphize(v) {
 
 function link(G, i) {
   if (i % blocksPerRow == 0) {
-    if (i - blocksPerRow >= 0) G.addEdge(i, i - blocksPerRow);
-    if (i + blocksPerRow < nBlocks) G.addEdge(i, i + blocksPerRow);
+    if (i - blocksPerRow >= 0) {
+      G.addEdge(i, i - blocksPerRow);
+      G.addEdge(i, i - blocksPerRow + 1);
+    }
+    if (i + blocksPerRow < nBlocks) {
+      G.addEdge(i, i + blocksPerRow);
+      G.addEdge(i, i + blocksPerRow + 1);
+    }
     G.addEdge(i, i + 1);
   } else if (i % blocksPerRow == blocksPerRow - 1) {
-    if (i - blocksPerRow >= 0) G.addEdge(i, i - blocksPerRow);
-    if (i + blocksPerRow < nBlocks) G.addEdge(i, i + blocksPerRow);
+    if (i - blocksPerRow >= 0) {
+      G.addEdge(i, i - blocksPerRow);
+      G.addEdge(i, i - blocksPerRow - 1);
+    }
+    if (i + blocksPerRow < nBlocks) {
+      G.addEdge(i, i + blocksPerRow);
+      G.addEdge(i, i + blocksPerRow - 1);
+    }
     G.addEdge(i, i - 1);
   } else {
-    if (i - blocksPerRow >= 0) G.addEdge(i, i - blocksPerRow);
-    if (i + blocksPerRow < nBlocks) G.addEdge(i, i + blocksPerRow);
+    if (i - blocksPerRow >= 0) {
+      G.addEdge(i, i - blocksPerRow);
+      G.addEdge(i, i - blocksPerRow - 1);
+      G.addEdge(i, i - blocksPerRow + 1);
+    }
+    if (i + blocksPerRow < nBlocks) {
+      G.addEdge(i, i + blocksPerRow);
+      G.addEdge(i, i + blocksPerRow - 1);
+      G.addEdge(i, i + blocksPerRow + 1);
+    }
     G.addEdge(i, i - 1);
     G.addEdge(i, i + 1);
   }
