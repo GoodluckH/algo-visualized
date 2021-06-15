@@ -1,0 +1,92 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #ddbea9;
+
+}
+
+.wrapper{
+  margin-top: 0.5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.canvas {
+  margin-top: 1.5%;
+  margin-bottom: 1em;
+  height: 600px;
+  width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: gray;
+  cursor: pointer;
+  box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.83);
+}
+
+.block {
+  background-color: #023047;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  transition: color 1s ease;
+}
+
+.vertBar {
+  background-color: #ffe8d6;
+  width: 20%;
+  height: inherit;
+}
+.horiBar {
+  background-color: #ffe8d6;
+  width: inherit;
+  height: 20%;
+}
+
+#runAlgos {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+}
+
+button {
+  font-size: 15px;
+  background-color: #2a9d8f;
+  font-weight: bold;
+  color: #ffe8d6;
+  border: none;
+  box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.83);
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 5px 10px;
+  font-family:Arial;
+}
+
+button:active {
+	position:relative;
+	top:0px;
+  box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.83);
+}
+
+#reset:disabled, #targetGen:disabled, button:disabled {
+  box-shadow: none;
+  background-color: gray;
+}
+
+#reset {
+  background-color: #e63946;
+  color: white;
+}
+
+#targetGen {
+  background-color: #e76f51;
+}
+

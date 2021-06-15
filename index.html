@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+    <title>Algo Visualized</title>
+  </head>
+  <body>
+    <div class="wrapper">
+    <button id="reset" onclick="populate()">Reset</button>
+      <div id="runAlgos">
+        <button id="targetGen" onclick="targetGen()">Regenerate Target</button>
+        <button id="dfs" onclick="runDFS()">Run DFS</button>
+        <button id="bfs" onclick="runBFS()">Run BFS</button>
+      </div>
+      <div id="canvas" class="canvas"></div>
+     </div> 
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="Graph.js"></script>
+    <script type="text/javascript" src="Algorithms/BFS.js"></script>
+    <script type="text/javascript" src="Algorithms/DFS.js"></script>
+  </body>
+</html>
