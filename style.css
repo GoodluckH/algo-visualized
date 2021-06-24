@@ -58,16 +58,24 @@ body {
 
 button {
   font-size: 15px;
-  background-color: #2a9d8f;
+  background-color: #305e94;
   font-weight: bold;
-  color: #ffe8d6;
+  color: white;
   border: none;
   box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.83);
   border-radius: 8px;
   padding: 10px 20px;
   cursor: pointer;
   margin: 5px 10px;
-  font-family:Arial;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.directed {
+  background-color: #17795b;
+}
+
+#github {
+  background-color: black;
 }
 
 button:active {

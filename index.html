@@ -14,14 +14,20 @@
     <button id="reset" onclick="populate()">Reset</button>
       <div id="runAlgos">
         <button id="targetGen" onclick="targetGen()">Regenerate Target</button>
-        <button id="dfs" onclick="runDFS()">Run DFS</button>
-        <button id="bfs" onclick="runBFS()">Run BFS</button>
+        <button id="dfs" onclick="runDFS()">DFS</button>
+        <button id="bfs" onclick="runBFS()">BFS</button>
+        <button class="directed" id="dijkstra" onclick="runDijkstra()">Dijkstra</button>
       </div>
       <div id="canvas" class="canvas"></div>
      </div> 
+     <button id="github" onclick="window.open('https://github.com/GoodluckH/algo-visualized','_blank')"">Contribute</button>
     <script type="text/javascript" src="app.js"></script>
-    <script type="text/javascript" src="Graph.js"></script>
+    <script type="text/javascript" src="Data Structures/Graph.js"></script>
+    <script type="text/javascript" src="Data Structures/EdgeWeightedDigraph.js"></script>
+    <script type="text/javascript" src="Data Structures/IndexPQ.js"></script>
+    <script type="text/javascript" src="Data Structures/DirectedEdge.js"></script>
     <script type="text/javascript" src="Algorithms/BFS.js"></script>
     <script type="text/javascript" src="Algorithms/DFS.js"></script>
+    <script type="text/javascript" src="Algorithms/Dijkstra.js"></script>
   </body>
 </html>

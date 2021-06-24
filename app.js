@@ -6,6 +6,7 @@ let dfsBtn = document.getElementById("dfs");
 let blocks = document.getElementsByClassName("block");
 let bfsBtn = document.getElementById("bfs");
 let algBtns = document.getElementById("runAlgos");
+let dijBtns = document.getElementById("dijkstra");
 
 var blockHeight = 25;
 var blockWidth = 25;
@@ -45,6 +46,9 @@ function populate() {
 
 function target() {
   end = Math.floor(Math.random() * nBlocks);
+  while (end == start) {
+    end = Math.floor(Math.random() * nBlocks);
+  }
   var blockTarget = document.getElementById(end);
   blockTarget.style.backgroundColor = "#e76f51";
 }
@@ -168,6 +172,15 @@ function runBFS() {
   visualize(markedPaths, solutionPath, 2);
 }
 
+function runDijkstra() {
+  initAlgo();
+  let G = digraphize(nBlocks);
+  let dijkstraPath = new Dijkstra(G, start, end);
+  let solutionPath = dijkstraPath.pathTo(end).reverse();
+  let markedPaths = dijkstraPath.vistiedPaths();
+  visualize(markedPaths, solutionPath, 2);
+}
+
 /******** helper functions ******/
 
 function visualize(markedPaths, solutionPath, speed) {
@@ -208,40 +221,66 @@ function graphize(v) {
   return G;
 }
 
+function digraphize(v) {
+  const G = new EdgeWeightedDigraph(v);
+  for (i = 0; i < nBlocks; i++) {
+    weightedLink(G, i);
+  }
+  return G;
+}
+
 function link(G, i) {
   if (i % blocksPerRow == 0) {
-    if (i - blocksPerRow >= 0) {
-      G.addEdge(i, i - blocksPerRow);
-      G.addEdge(i, i - blocksPerRow + 1);
-    }
-    if (i + blocksPerRow < nBlocks) {
-      G.addEdge(i, i + blocksPerRow);
-      G.addEdge(i, i + blocksPerRow + 1);
-    }
+    if (i - blocksPerRow >= 0) G.addEdge(i, i - blocksPerRow);
+    if (i + blocksPerRow < nBlocks) G.addEdge(i, i + blocksPerRow);
     G.addEdge(i, i + 1);
   } else if (i % blocksPerRow == blocksPerRow - 1) {
-    if (i - blocksPerRow >= 0) {
-      G.addEdge(i, i - blocksPerRow);
-      G.addEdge(i, i - blocksPerRow - 1);
-    }
-    if (i + blocksPerRow < nBlocks) {
-      G.addEdge(i, i + blocksPerRow);
-      G.addEdge(i, i + blocksPerRow - 1);
-    }
+    if (i - blocksPerRow >= 0) G.addEdge(i, i - blocksPerRow);
+    if (i + blocksPerRow < nBlocks) G.addEdge(i, i + blocksPerRow);
     G.addEdge(i, i - 1);
   } else {
-    if (i - blocksPerRow >= 0) {
-      G.addEdge(i, i - blocksPerRow);
-      G.addEdge(i, i - blocksPerRow - 1);
-      G.addEdge(i, i - blocksPerRow + 1);
-    }
-    if (i + blocksPerRow < nBlocks) {
-      G.addEdge(i, i + blocksPerRow);
-      G.addEdge(i, i + blocksPerRow - 1);
-      G.addEdge(i, i + blocksPerRow + 1);
-    }
+    if (i - blocksPerRow >= 0) G.addEdge(i, i - blocksPerRow);
+    if (i + blocksPerRow < nBlocks) G.addEdge(i, i + blocksPerRow);
     G.addEdge(i, i - 1);
     G.addEdge(i, i + 1);
+  }
+}
+
+// for weighted graphs, diagonal blocks have a weight of 1.4, or sqrt(2)
+function weightedLink(G, i) {
+  if (i % blocksPerRow == 0) {
+    if (i - blocksPerRow >= 0) {
+      G.addEdge(new DirectedEdge(i, i - blocksPerRow, 1));
+      G.addEdge(new DirectedEdge(i, i - blocksPerRow + 1, 1.4));
+    }
+    if (i + blocksPerRow < nBlocks) {
+      G.addEdge(new DirectedEdge(i, i + blocksPerRow, 1));
+      G.addEdge(new DirectedEdge(i, i + blocksPerRow + 1, 1.4));
+    }
+    G.addEdge(new DirectedEdge(i, i + 1, 1));
+  } else if (i % blocksPerRow == blocksPerRow - 1) {
+    if (i - blocksPerRow >= 0) {
+      G.addEdge(new DirectedEdge(i, i - blocksPerRow, 1));
+      G.addEdge(new DirectedEdge(i, i - blocksPerRow - 1, 1.4));
+    }
+    if (i + blocksPerRow < nBlocks) {
+      G.addEdge(new DirectedEdge(i, i + blocksPerRow, 1));
+      G.addEdge(new DirectedEdge(i, i + blocksPerRow - 1, 1.4));
+    }
+    G.addEdge(new DirectedEdge(i, i - 1, 1));
+  } else {
+    if (i - blocksPerRow >= 0) {
+      G.addEdge(new DirectedEdge(i, i - blocksPerRow, 1));
+      G.addEdge(new DirectedEdge(i, i - blocksPerRow - 1, 1.4));
+      G.addEdge(new DirectedEdge(i, i - blocksPerRow + 1, 1.4));
+    }
+    if (i + blocksPerRow < nBlocks) {
+      G.addEdge(new DirectedEdge(i, i + blocksPerRow, 1));
+      G.addEdge(new DirectedEdge(i, i + blocksPerRow - 1, 1.4));
+      G.addEdge(new DirectedEdge(i, i + blocksPerRow + 1, 1.4));
+    }
+    G.addEdge(new DirectedEdge(i, i - 1, 1));
+    G.addEdge(new DirectedEdge(i, i + 1, 1));
   }
 }
 
