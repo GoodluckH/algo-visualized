@@ -10,10 +10,19 @@ class DFS {
   dfs(G, v) {
     this.marked[v] = true;
     this.allVisited.push(v);
-    for (let x of G.adjTo(v)) {
-      if (!this.marked[x]) {
-        this.edgeTo[x] = v;
-        this.dfs(G, x);
+    let stack = [];
+    stack.push(v);
+
+    while (stack.length) {
+      let w = stack.pop();
+      this.marked[w] = true;
+
+      for (let x of G.adjTo(w)) {
+        if (!this.marked[x]) {
+          this.allVisited.push(x);
+          this.edgeTo[x] = w;
+          stack.push(x);
+        }
       }
     }
   }

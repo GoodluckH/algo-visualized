@@ -4,10 +4,9 @@ body {
   justify-content: center;
   flex-direction: column;
   background-color: #ddbea9;
-
 }
 
-.wrapper{
+.wrapper {
   margin-top: 0.5%;
   display: flex;
   align-items: center;
@@ -29,8 +28,8 @@ body {
 
 .block {
   background-color: #023047;
-  height: 25px;
-  width: 25px;
+  height: 10px;
+  width: 10px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -79,12 +78,14 @@ button {
 }
 
 button:active {
-	position:relative;
-	top:0px;
+  position: relative;
+  top: 0px;
   box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.83);
 }
 
-#reset:disabled, #targetGen:disabled, button:disabled {
+#reset:disabled,
+#targetGen:disabled,
+button:disabled {
   box-shadow: none;
   background-color: gray;
 }
@@ -97,4 +98,3 @@ button:active {
 #targetGen {
   background-color: #e76f51;
 }
-
