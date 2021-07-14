@@ -8,8 +8,8 @@ class AStar {
     this.target = target;
     this.targetHit = false;
 
-    this.targetXPos = this.target % blocksPerRow;
-    this.targetYPos = Math.floor(this.target / blocksPerRow);
+    this.targetXPos = this.target % cols;
+    this.targetYPos = Math.floor(this.target / cols);
 
     for (i = 0; i < G.V(); i++) this.distTo[i] = Number.POSITIVE_INFINITY;
 
@@ -39,8 +39,8 @@ class AStar {
   }
 
   heuristic(v) {
-    let vYPos = Math.floor(v / blocksPerRow);
-    let vXPos = v % blocksPerRow;
+    let vYPos = Math.floor(v / cols);
+    let vXPos = v % cols;
     let squredDiff =
       (this.targetXPos - vXPos) ** 2 + (this.targetYPos - vYPos) ** 2;
     return Math.sqrt(squredDiff);

@@ -12,11 +12,11 @@ var blockHeight = 10;
 var blockWidth = 10;
 var canvasHeight = canvas.clientHeight;
 var canvasWidth = canvas.clientWidth;
-var blocksPerRow = canvasWidth / blockWidth;
-var blocksPerCol = canvasHeight / blockHeight;
+var cols = canvasWidth / blockWidth;
+var rows = canvasHeight / blockHeight;
 var nBlocks = (canvasHeight * canvasWidth) / (blockHeight * blockWidth);
 
-var multiplierGraphWeight = 2;
+var weight = 2;
 
 /**** set init conditions ******/
 populate();
@@ -107,7 +107,7 @@ function pathAnimate(index) {
 }
 
 function convertDivToLine(cur, prev) {
-  if (Math.abs(cur - prev) == blocksPerRow) {
+  if (Math.abs(cur - prev) == cols) {
     if (
       prev != start &&
       blocks[prev].children[0] != null &&
@@ -242,57 +242,27 @@ function digraphize(v) {
 }
 
 function link(G, i) {
-  if (i % blocksPerRow == 0) {
-    if (i - blocksPerRow >= 0) G.addEdge(i, i - blocksPerRow);
-    if (i + blocksPerRow < nBlocks) G.addEdge(i, i + blocksPerRow);
-    G.addEdge(i, i + 1);
-  } else if (i % blocksPerRow == blocksPerRow - 1) {
-    if (i - blocksPerRow >= 0) G.addEdge(i, i - blocksPerRow);
-    if (i + blocksPerRow < nBlocks) G.addEdge(i, i + blocksPerRow);
-    G.addEdge(i, i - 1);
-  } else {
-    if (i - blocksPerRow >= 0) G.addEdge(i, i - blocksPerRow);
-    if (i + blocksPerRow < nBlocks) G.addEdge(i, i + blocksPerRow);
-    G.addEdge(i, i - 1);
-    G.addEdge(i, i + 1);
-  }
+  if (i % cols != cols - 1) G.addEdge(i, i + 1);
+  if (i % cols != 0) G.addEdge(i, i - 1);
+  if (i - cols >= 0) G.addEdge(i, i - cols);
+  if (i + cols < rows * cols) G.addEdge(i, i + cols);
+  
 }
 
 // for weighted graphs, diagonal blocks have a weight of 1.4, or sqrt(2)
 function weightedLink(G, i) {
-  if (i % blocksPerRow == 0) {
-    if (i - blocksPerRow >= 0) {
-      G.addEdge(new DirectedEdge(i, i - blocksPerRow, 1 * multiplierGraphWeight));
-      G.addEdge(new DirectedEdge(i, i - blocksPerRow + 1, 1.4 * multiplierGraphWeight));
-    }
-    if (i + blocksPerRow < nBlocks) {
-      G.addEdge(new DirectedEdge(i, i + blocksPerRow, 1 * multiplierGraphWeight));
-      G.addEdge(new DirectedEdge(i, i + blocksPerRow + 1, 1.4 * multiplierGraphWeight));
-    }
-    G.addEdge(new DirectedEdge(i, i + 1, 1 * multiplierGraphWeight));
-  } else if (i % blocksPerRow == blocksPerRow - 1) {
-    if (i - blocksPerRow >= 0) {
-      G.addEdge(new DirectedEdge(i, i - blocksPerRow, 1 * multiplierGraphWeight));
-      G.addEdge(new DirectedEdge(i, i - blocksPerRow - 1, 1.4 * multiplierGraphWeight));
-    }
-    if (i + blocksPerRow < nBlocks) {
-      G.addEdge(new DirectedEdge(i, i + blocksPerRow, 1 * multiplierGraphWeight));
-      G.addEdge(new DirectedEdge(i, i + blocksPerRow - 1, 1.4 * multiplierGraphWeight));
-    }
-    G.addEdge(new DirectedEdge(i, i - 1, 1 * multiplierGraphWeight));
-  } else {
-    if (i - blocksPerRow >= 0) {
-      G.addEdge(new DirectedEdge(i, i - blocksPerRow, 1 * multiplierGraphWeight));
-      G.addEdge(new DirectedEdge(i, i - blocksPerRow - 1, 1.4 * multiplierGraphWeight));
-      G.addEdge(new DirectedEdge(i, i - blocksPerRow + 1, 1.4 * multiplierGraphWeight));
-    }
-    if (i + blocksPerRow < nBlocks) {
-      G.addEdge(new DirectedEdge(i, i + blocksPerRow, 1 * multiplierGraphWeight));
-      G.addEdge(new DirectedEdge(i, i + blocksPerRow - 1, 1.4 * multiplierGraphWeight));
-      G.addEdge(new DirectedEdge(i, i + blocksPerRow + 1, 1.4 * multiplierGraphWeight));
-    }
-    G.addEdge(new DirectedEdge(i, i - 1, 1 * multiplierGraphWeight));
-    G.addEdge(new DirectedEdge(i, i + 1, 1 * multiplierGraphWeight));
+  if (i % cols != cols - 1) G.addEdge(new DirectedEdge(i, i + 1, 1 * weight));
+  if (i % cols != 0) G.addEdge(new DirectedEdge(i, i - 1, 1 * weight));
+
+  if (i + cols < rows * cols) {
+      G.addEdge(new DirectedEdge(i, i + cols, 1 * weight));
+      if (i % cols != cols - 1) G.addEdge(new DirectedEdge(i, i + cols + 1, 1.4 * weight));
+      if (i % cols != 0) G.addEdge(new DirectedEdge(i, i + cols - 1, 1.4 * weight));
+  }
+  if (i - cols >= 0) {
+    G.addEdge(new DirectedEdge(i, i - cols, 1 * weight));
+      if (i % cols != cols - 1) G.addEdge(new DirectedEdge(i, i - cols + 1, 1.4 * weight))
+      if (i % cols != 0) G.addEdge(new DirectedEdge(i, i - cols - 1, 1.4 * weight));
   }
 }
 
